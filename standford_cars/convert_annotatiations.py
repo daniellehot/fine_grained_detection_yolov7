@@ -9,6 +9,7 @@ import random
 import cv2 as cv
 import shutil
 
+
 def create_class_to_id_map(_labels):
     class_to_id_map = {}
     for label in _labels:
@@ -76,14 +77,15 @@ def move_files(_files, _current_destination, _goal_img_destination, _goal_annota
         goal_img_path = os.path.join(_goal_img_destination, filename)
         filename = filename.replace(".jpg",".txt")
         goal_annotation_path = os.path.join(_goal_annotations_destination, filename)
+        print("=======================")
         print(current_path)
         print(goal_img_path)
         print(goal_annotation_path)
-        #print(entry[:-1])
         string_to_save = str(entry[0]) + " " + str(entry[1]) + " " + str(entry[2]) + " " + str(entry[3])  + " " + str(entry[4])
         with open(goal_annotation_path, 'w') as f:
             f.write(string_to_save)
-        exit(50)
+        shutil.move(current_path, goal_img_path)
+        #exit(50)
         
 
 if __name__=="__main__":
@@ -109,8 +111,6 @@ if __name__=="__main__":
 
     test = list()
     for example in mat_test['annotations'][0]:
-        #image = example[-1][0]
-        #test.append(image)
         label = labels[example[-2][0][0]-1]
         image = example[-1][0]
         x_min = example[0][0][0]
@@ -125,9 +125,9 @@ if __name__=="__main__":
     #np.random.shuffle(validation)
     train = train[validation_size:]
 
-    #print("Train after split", len(train))
-    #print("Validation", len(validation))
-    #print("Test", len(test))
+    print("Train set ", len(train))
+    print("Validation set", len(validation))
+    print("Test set", len(test))
     #test_size = int(len(train) * 0.20)
     #test = train[:test_size].copy()
     #np.random.shuffle(test)
@@ -148,12 +148,3 @@ if __name__=="__main__":
     move_files(_files = validation_converted, _current_destination = "cars_train", _goal_img_destination = "images/val", _goal_annotations_destination = "annotations/val")
     move_files(_files = test_converted, _current_destination = "cars_test", _goal_img_destination = "images/test", _goal_annotations_destination = "annotations/test")
     
-    """
-    train_path = 'car_devkit/train/cars_train/'
-    test_path = 'car_devkit/test/cars_test/'
-
-    with open('car_devkit/cars_data.csv', 'w+') as f:
-        [f.write('TRAIN,%s%s,%s,%s,%s,%s,%s\n' %(train_path, img, bbox_x1, bbox_x2, bbox_y1, bbox_y2, lab)) for img, bbox_x1, bbox_x2, bbox_y1, bbox_y2, lab in train]
-        [f.write('VALIDATION,%s%s,%s,%s,%s,%s,%s\n' %(train_path, img, bbox_x1, bbox_x2, bbox_y1, bbox_y2, lab)) for img, bbox_x1, bbox_x2, bbox_y1, bbox_y2, lab in validation]
-        [f.write('TEST,%s%s\n' %(test_path,img)) for img,_,_,_,_,_ in test]# encoding:utf8
-    """

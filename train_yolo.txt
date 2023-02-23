@@ -1,0 +1,1 @@
+python3 train.py --img-size 640 --cfg cfg/training/yolov7.yaml --hyp data/hyp.scratch.custom.yaml --batch 8 --epochs 10 --data data/standford_cars_data.yaml --weights weights/yolov7_training.pt --workers 24 --name yolo_standford_cars
