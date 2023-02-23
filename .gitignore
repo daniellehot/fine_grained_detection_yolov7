@@ -171,8 +171,6 @@ poetry.toml
 .ruff_cache/
 
 # Custom
-Road_Sign_Dataset
-standford_cars_old
 yolov7
 *.tgz
 *.zip
